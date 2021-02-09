@@ -1,7 +1,7 @@
 import React, { Suspense, useContext, useEffect, useMemo, useState } from 'react';
 import * as THREE from 'three/src/Three'
-import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber';
-import DatGui, { DatBoolean, DatColor, DatNumber, DatString } from '@tim-soft/react-dat-gui';
+import { Canvas, useLoader, useThree } from 'react-three-fiber';
+import DatGui, { DatButton, DatFolder, DatColor, DatNumber, DatSelect } from '@tim-soft/react-dat-gui';
 
 import MyCamera from '../reusable/CustomCamera';
 import Stats from '../reusable/Stats';
@@ -92,43 +92,75 @@ function Lights() {
 function GuiControls() {
     const [contextData, setContextData] = useContext(DatGuiContext);
 
+    let resetState = function () {
+        setContextData({ x: 0, y: 0, z: 0, opacity: 1, color: "#ff0000", colorA: "#000000", colorE: "#000033", colorS: "#ffff00", shininess: 30, material: "phong" });
+    }
+
     return (
         <div style={{ position: "absolute", top: 0, right: 0 }}>
             <DatGui data={contextData} onUpdate={setContextData}>
-                <DatNumber path='x' label='Pos X' min={-200} max={200} step={1} />
-                <DatNumber path='y' label='Pos Y' min={-200} max={200} step={1} />
-                <DatNumber path='z' label='Pos Z' min={-200} max={200} step={1} />
+                <DatFolder title='Position'>
+                    <DatNumber path='x' label='Pos X' min={-200} max={200} step={1} />
+                    <DatNumber path='y' label='Pos Y' min={-200} max={200} step={1} />
+                    <DatNumber path='z' label='Pos Z' min={-200} max={200} step={1} />
+                </DatFolder>
                 <DatNumber path='opacity' label='Opacity' min={0} max={1} step={0.01} />
 
                 <DatColor path='color' label='Color (Diffuse)' />
                 <DatColor path='colorA' label='Color (Ambient)' />
                 <DatColor path='colorE' label='Color (Emissive)' />
                 <DatColor path='colorS' label='Color (Specular)' />
+
+                <DatNumber path="shininess" label="Shininess" min={0} max={60} step={1} />
+                <DatSelect path='material' label="Material Type" options={['basic', 'lambert', 'phong', 'wireframe']} />
+                <DatButton label="ResetSphere" onClick={resetState} />
             </DatGui>
         </div>
     )
 }
 
 function ControlledSphere(props) {
-    function StringToColor(color){
+    function StringToColor(color) {
         return new THREE.Color(color);
     }
 
     const [sphereMat] = useMemo(() => {
-        const sphereMat = new THREE.MeshBasicMaterial({ color: StringToColor(props.data.color), transparent: true, opacity: props.data.opacity });
+        let sphereMat = undefined;
+        if (props.data.material === 'basic') {
+            sphereMat = new THREE.MeshBasicMaterial({ color: StringToColor(props.data.color), transparent: true, opacity: props.data.opacity });
+        } else if (props.data.material === 'lambert') {
+            sphereMat = new THREE.MeshLambertMaterial({ color: StringToColor(props.data.color), transparent: true, opacity: props.data.opacity });
+        } else if (props.data.material === 'phong') {
+            sphereMat = new THREE.MeshPhongMaterial({ color: StringToColor(props.data.color), transparent: true, opacity: props.data.opacity });
+        } else if (props.data.material === 'wireframe') {
+            sphereMat = new THREE.MeshBasicMaterial({ color: StringToColor(props.data.color), wireframe: true });
+        }
+
+        if (sphereMat.specular) {
+            sphereMat.specular = StringToColor(props.data.colorS);
+        }
+
+        if (sphereMat.ambient) {
+            sphereMat.ambient = StringToColor(props.data.colorA);
+        }
+
+        if (sphereMat.emissive) {
+            sphereMat.emissive = StringToColor(props.data.colorE);
+        }
+
         return [sphereMat];
-    });
+    }, [props.data.material, props.data.colorS, props.data.colorE, props.data.colorA, props.data.color, props.data.opacity]);
 
     return (<group>
         <mesh position={[props.data.x, props.data.y, props.data.z]} material={sphereMat}>
-            <boxGeometry attach="geometry" args={[100, 100, 100]}></boxGeometry>
+            <sphereGeometry attach="geometry" args={[50, 32, 16]}></sphereGeometry>
             {/* <meshBasicMaterial attach="material" color={0xffff00}></meshBasicMaterial> */}
         </mesh>
     </group>);
 }
 
 function ColorExplorerPage() {
-    const [data, setData] = useState({ x: 0, y: 0, z: 0, opacity: 1, color: "#ff0000", colorA: "#000000", colorE:"#000033", colorS:"#ffff00" });
+    const [data, setData] = useState({ x: 0, y: 0, z: 0, opacity: 1, color: "#ff0000", colorA: "#000000", colorE: "#000033", colorS: "#ffff00", shininess: 30, material: "phong" });
     return (
         <div className="wrapper">
             <DatGuiContext.Provider value={[data, setData]}>
