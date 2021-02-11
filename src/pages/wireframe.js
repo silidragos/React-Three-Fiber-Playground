@@ -1,11 +1,13 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useMemo, useRef } from 'react';
+import * as THREE from 'three/src/Three';
+import {SceneUtils} from 'three/examples/jsm/utils/SceneUtils';
 import { Canvas, useLoader, useThree } from 'react-three-fiber';
 
 import MyCamera from '../reusable/CustomCamera';
 import Stats from '../reusable/Stats';
 import OrbitControls from '../reusable/OrbitControls';
 
-import { DoubleSide, TextureLoader, RepeatWrapping, BackSide, FogExp2 } from "three";
+import { DoubleSide, TextureLoader, RepeatWrapping, BackSide, FogExp2, Scene } from "three";
 
 import floorTex from '../assets/textures/checkerboard.jpg';
 
@@ -28,15 +30,39 @@ function Geometry() {
   const floorTexture = useLoader(TextureLoader, floorTex);
   floorTexture.wrapS = floorTexture.wrapT = RepeatWrapping;
   floorTexture.repeat.set(10, 10);
+
+  let {scene} = useThree();
+
+  let group = useRef();
+
+  const [wireframeMat, darkMat] = useMemo(() => {
+    const wireframeMat = new THREE.MeshBasicMaterial({ color: 0x00ee00, wireframe: true, transparent: true });
+    const darkMat = new THREE.MeshBasicMaterial({color:0x000088});
+    return [wireframeMat, darkMat];
+  });
+
+  useEffect(()=>{
+    const multiMatSphere = SceneUtils.createMultiMaterialObject(
+      new THREE.SphereGeometry( 50, 32, 16 ), [darkMat, wireframeMat]
+    );
+
+    multiMatSphere.position.set(150, 50, 0);
+
+    scene.add(multiMatSphere);
+  }, [scene, darkMat, wireframeMat]);
+
+
   return (
-    <group>
-      <mesh position={[100, 50, -50]}>
-        <sphereGeometry attach="geometry" args={[50, 32, 16]} />
-        <meshLambertMaterial attach="material" args={{ color: 0x8888ff }}></meshLambertMaterial>
+    <group ref={group}>
+      <mesh position={[-150, 50, 0]} material={wireframeMat}>
+        <sphereGeometry args={[50, 32, 16]}></sphereGeometry>
       </mesh>
-      <mesh position={[-100, 50, -50]}>
-        <boxGeometry attach="geometry" args={[100, 100, 100, 1, 1, 1]}></boxGeometry>
-        <meshLambertMaterial attach="material" args={{ color: 0x8888ff }}></meshLambertMaterial>
+
+      <mesh position={[0, 50, 0]} material={darkMat}>
+        <sphereGeometry args={[50, 32, 16]}></sphereGeometry>
+      </mesh>
+      <mesh position={[0, 50, 0]} material={wireframeMat}>
+        <sphereGeometry args={[50, 32, 16]}></sphereGeometry>
       </mesh>
 
       {/* Floor */}
@@ -48,7 +74,7 @@ function Geometry() {
       {/* Sky */}
       <mesh>
         <boxGeometry attach="geometry" args={[10000, 10000, 10000]}></boxGeometry>
-        <meshBasicMaterial args={{color:0x9990ff, side: BackSide}}></meshBasicMaterial>
+        <meshBasicMaterial args={{ color: 0x9990ff, side: BackSide }}></meshBasicMaterial>
       </mesh>
 
       <axesHelper args={[100]}></axesHelper>

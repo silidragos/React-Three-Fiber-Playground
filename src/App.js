@@ -11,6 +11,7 @@ import ColorExplorerPage from './pages/color-explorer';
 import WireframePage from './pages/wireframe';
 
 import './App.css';
+import DashedLinesPage from "./pages/dashed-lines";
 
 export default function App() {
   return (
@@ -28,6 +29,9 @@ export default function App() {
           </Route>
           <Route path="/wireframe">
             <WireframePage/>
+          </Route>
+          <Route path='/dashed-lines'>
+            <DashedLinesPage/>
           </Route>
         </Switch>
       </div>
