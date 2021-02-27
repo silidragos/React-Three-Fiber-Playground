@@ -1,10 +1,12 @@
-import React, { Suspense, useEffect, useMemo, useRef } from 'react';
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three/src/Three';
-import { Canvas, useThree } from 'react-three-fiber';
+import { Canvas, useThree, useLoader } from 'react-three-fiber';
 
 import MyCamera from '../reusable/CustomCamera';
 import Stats from '../reusable/Stats';
 import OrbitControls from '../reusable/OrbitControls';
+
+import floorTex from '../assets/textures/checkerboard.jpg';
 
 import { BackSide, FogExp2 } from "three";
 
@@ -24,29 +26,44 @@ function CameraWrapper() {
 }
 
 function Geometry() {
+    const floorTexture = useLoader(THREE.TextureLoader, floorTex);
+    floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+    floorTexture.repeat.set(10, 10);
 
+    let [nrOfFaces] = useState(2);
+
+    let boxGeometryRef = useRef();
+
+    let {scene} = useThree();
+
+    useEffect(() => {
+        let colors = [];
+        //24 * 3
+        //nr_of_faces * 4 * channels
+        for(let i=0;i<(nrOfFaces + 1) * (nrOfFaces + 1) * 6 * 3;i++){
+            colors.push(255 * Math.random());
+        }
+
+        let colorsArr = new Uint8Array(colors);
+
+        boxGeometryRef.current.setAttribute('color', new THREE.BufferAttribute(colorsArr, 3, true));
+        // boxGeometryRef.current.attributes.color.needsUpdate = true;
+        console.log("geo", boxGeometryRef.current);
+
+
+    }, [boxGeometryRef, scene])
     return (
         <group>
-            <mesh position={[-60, 55, 0]}>
-                <sphereGeometry args={[50, 32, 16]}></sphereGeometry>
-                <meshNormalMaterial></meshNormalMaterial>
+            <mesh position={[-100, 50, 0]}>
+                <boxBufferGeometry ref={boxGeometryRef}  args={[80, 80, 80, nrOfFaces, nrOfFaces, nrOfFaces]}></boxBufferGeometry>
+                <meshBasicMaterial vertexColors={THREE.VertexColors}></meshBasicMaterial>
             </mesh>
 
-            <mesh position={[-60, 55, 0]} scale={[1.05, 1.05, 1.05]}>
-                <sphereGeometry args={[50, 32, 16]}></sphereGeometry>
-                <meshBasicMaterial color={0xff0000} side={THREE.BackSide}></meshBasicMaterial>
-            </mesh>
-
-            <mesh position={[60, 60, 0]}>
-                <boxGeometry args={[80, 80, 80]}></boxGeometry>
-                <meshNormalMaterial></meshNormalMaterial>
-            </mesh>
-
-            <mesh position={[60, 60, 0]} scale={[1.05, 1.05, 1.05]}>
-                <boxGeometry args={[80, 80, 80]}></boxGeometry>
-                <meshBasicMaterial color={0x00ff00} side={THREE.BackSide}></meshBasicMaterial>
-            </mesh>
-
+            {/* Floor */}
+            {/* <mesh position={[0, -0.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                <planeGeometry attach="geometry" args={[1000, 1000, 1, 1]}></planeGeometry>
+                <meshBasicMaterial attach="material" map={floorTexture} args={{ side: THREE.DoubleSide }}></meshBasicMaterial>
+            </mesh> */}
 
             {/* Sky */}
             <mesh>
