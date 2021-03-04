@@ -2,6 +2,8 @@ import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three/src/Three';
 import { Canvas, useThree, useLoader } from 'react-three-fiber';
 
+import MathUtils from '../reusable/MathUtils';
+
 import MyCamera from '../reusable/CustomCamera';
 import Stats from '../reusable/Stats';
 import OrbitControls from '../reusable/OrbitControls';
@@ -25,39 +27,133 @@ function CameraWrapper() {
     );
 }
 
+//This replaces Face color, as I wasn't really able to find an actual replacement for it, so I used vertex color instead. 
+//I guess Faces used this behind the scenes anyway
+function NonIndexedFaceColors(props) {
+    let { scene } = useThree();
+
+    let [boxGeometry] = useMemo(() => {
+        //If it is indexed, the vertices indexes are re-used between triangles.
+        //We'll use it like this so we can give different colors to each triangle
+        let boxGeometry = new THREE.BoxBufferGeometry(80, 80, 80, props.nrOfFaces, props.nrOfFaces, props.nrOfFaces).toNonIndexed();
+
+        let colors = [];
+        const totalTriangles = props.nrOfFaces * props.nrOfFaces * 2 * 6;
+        for (let i = 0; i < totalTriangles; i++) {
+            let r = Math.random() * 255;
+            let g = Math.random() * 255;
+            let b = Math.random() * 255;
+            //For each vertex in triangle
+            for (let j = 0; j < 3; j++) {
+                colors.push(r);
+                colors.push(g);
+                colors.push(b);
+            }
+        }
+
+        let colorsArr = new Uint8Array(colors);
+
+        boxGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArr, 3, true));
+        boxGeometry.attributes.color.needsUpdate = true;
+
+        return [boxGeometry];
+    }, [props.nrOfFaces, scene]);
+
+    return (
+        <group>
+            { boxGeometry !== undefined && <mesh geometry={boxGeometry} position={[-100, 50, 0]}>
+                <meshBasicMaterial vertexColors={THREE.VertexColors}></meshBasicMaterial>
+            </mesh>}
+        </group>
+    )
+}
+
+function NonIndexedVertexColors(props) {
+    let { scene } = useThree();
+
+    let [boxGeometry] = useMemo(() => {
+        //If it is indexed, the vertices indexes are re-used between triangles.
+        //We'll use it like this so we can give different colors to each triangle
+        let boxGeometry = new THREE.BoxBufferGeometry(80, 80, 80, props.nrOfFaces, props.nrOfFaces, props.nrOfFaces).toNonIndexed();
+
+        let colors = [];
+        const totalTriangles = props.nrOfFaces * props.nrOfFaces * 2 * 6;
+        for (let i = 0; i < totalTriangles * 3; i++) {
+            let r = Math.random() * 255;
+            let g = Math.random() * 255;
+            let b = Math.random() * 255;
+            colors.push(r);
+            colors.push(g);
+            colors.push(b);
+        }
+
+        let colorsArr = new Uint8Array(colors);
+
+        boxGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArr, 3, true));
+        boxGeometry.attributes.color.needsUpdate = true;
+
+        return [boxGeometry];
+    }, [props.nrOfFaces, scene]);
+
+    return (
+        <group>
+            { boxGeometry !== undefined && <mesh geometry={boxGeometry} position={[0, 50, 0]}>
+                <meshBasicMaterial vertexColors={THREE.VertexColors}></meshBasicMaterial>
+            </mesh>}
+        </group>
+    )
+}
+
+function RGBColorCube() {
+    let { scene } = useThree();
+
+    let [boxGeometry] = useMemo(() => {
+        let size = 80;
+        let boxGeometry = new THREE.BoxBufferGeometry(size, size, size, 1, 1, 1);
+        let colors = [];
+
+        console.log("geo", boxGeometry);
+        //24 since vertices are reused / indexed now
+        for (let i = 0; i < 24*3; i+=3) {
+            const x = boxGeometry.getAttribute("position").array[i];
+            const y = boxGeometry.getAttribute("position").array[i+1];
+            const z = boxGeometry.getAttribute("position").array[i+2];
+            colors.push(MathUtils.Clamp(125 + x * 255.0 / size, 0, 255));
+            colors.push(MathUtils.Clamp(125 + y * 255.0 / size, 0, 255));
+            colors.push(MathUtils.Clamp(125 + z * 255.0 / size, 0, 255));
+            console.log("x", x);
+            console.log("xx", 125 + x * 255.0 / size);
+        }
+
+        let colorsArr = new Uint8Array(colors);
+
+        boxGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArr, 3, true));
+        boxGeometry.attributes.color.needsUpdate = true;
+
+        return [boxGeometry];
+    }, [scene]);
+
+    return (
+        <group>
+            { boxGeometry !== undefined && <mesh geometry={boxGeometry} position={[100, 50, 0]}>
+                <meshBasicMaterial vertexColors={THREE.VertexColors}></meshBasicMaterial>
+            </mesh>}
+        </group>
+    )
+}
+
 function Geometry() {
     const floorTexture = useLoader(THREE.TextureLoader, floorTex);
     floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
     floorTexture.repeat.set(10, 10);
 
-    let [nrOfFaces] = useState(2);
+    let [nrOfFaces] = useState(3);
 
-    let boxGeometryRef = useRef();
-
-    let {scene} = useThree();
-
-    useEffect(() => {
-        let colors = [];
-        //24 * 3
-        //nr_of_faces * 4 * channels
-        for(let i=0;i<(nrOfFaces + 1) * (nrOfFaces + 1) * 6 * 3;i++){
-            colors.push(255 * Math.random());
-        }
-
-        let colorsArr = new Uint8Array(colors);
-
-        boxGeometryRef.current.setAttribute('color', new THREE.BufferAttribute(colorsArr, 3, true));
-        // boxGeometryRef.current.attributes.color.needsUpdate = true;
-        console.log("geo", boxGeometryRef.current);
-
-
-    }, [boxGeometryRef, scene])
     return (
         <group>
-            <mesh position={[-100, 50, 0]}>
-                <boxBufferGeometry ref={boxGeometryRef}  args={[80, 80, 80, nrOfFaces, nrOfFaces, nrOfFaces]}></boxBufferGeometry>
-                <meshBasicMaterial vertexColors={THREE.VertexColors}></meshBasicMaterial>
-            </mesh>
+            <NonIndexedFaceColors nrOfFaces={nrOfFaces}></NonIndexedFaceColors>
+            <NonIndexedVertexColors nrOfFaces={nrOfFaces}></NonIndexedVertexColors>
+            <RGBColorCube></RGBColorCube>
 
             {/* Floor */}
             {/* <mesh position={[0, -0.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>

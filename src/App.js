@@ -12,9 +12,11 @@ import WireframePage from './pages/wireframe';
 import HelpersPage from './pages/helpers';
 import OutlinePage from './pages/outline';
 import VertexColorsPage from './pages/vertex-colors';
+import ShapesPage from './pages/shapes';
 
 import './App.css';
 import DashedLinesPage from "./pages/dashed-lines";
+import ExtrusionPage from "./pages/extrusion";
 
 export default function App() {
   return (
@@ -44,6 +46,12 @@ export default function App() {
           </Route>
           <Route path="/vertex-colors">
             <VertexColorsPage/>
+          </Route>
+          <Route path="/shapes">
+            <ShapesPage/>
+          </Route>
+          <Route path="/extrusion">
+            <ExtrusionPage/>
           </Route>
         </Switch>
       </div>
