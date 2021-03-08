@@ -30,6 +30,7 @@ function Star() {
 
   let groupParent = useRef();
 
+  //For some reason face doesn't have different material to extrusion
   let extrusionSettings = {
     size: 30, height: 4, curveSegments: 3,
     bevelThickness: 1, bevelSize: 2, bevelEnabled: false,
