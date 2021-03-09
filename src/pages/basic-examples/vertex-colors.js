@@ -1,14 +1,14 @@
-import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useMemo, useState } from 'react';
 import * as THREE from 'three/src/Three';
 import { Canvas, useThree, useLoader } from 'react-three-fiber';
 
-import MathUtils from '../reusable/MathUtils';
+import MathUtils from '../../reusable/MathUtils';
 
-import MyCamera from '../reusable/CustomCamera';
-import Stats from '../reusable/Stats';
-import OrbitControls from '../reusable/OrbitControls';
+import MyCamera from '../../reusable/CustomCamera';
+import Stats from '../../reusable/Stats';
+import OrbitControls from '../../reusable/OrbitControls';
 
-import floorTex from '../assets/textures/checkerboard.jpg';
+import floorTex from '../../assets/textures/checkerboard.jpg';
 
 import { BackSide, FogExp2 } from "three";
 
@@ -30,8 +30,6 @@ function CameraWrapper() {
 //This replaces Face color, as I wasn't really able to find an actual replacement for it, so I used vertex color instead. 
 //I guess Faces used this behind the scenes anyway
 function NonIndexedFaceColors(props) {
-    let { scene } = useThree();
-
     let [boxGeometry] = useMemo(() => {
         //If it is indexed, the vertices indexes are re-used between triangles.
         //We'll use it like this so we can give different colors to each triangle
@@ -57,7 +55,7 @@ function NonIndexedFaceColors(props) {
         boxGeometry.attributes.color.needsUpdate = true;
 
         return [boxGeometry];
-    }, [props.nrOfFaces, scene]);
+    }, [props.nrOfFaces]);
 
     return (
         <group>

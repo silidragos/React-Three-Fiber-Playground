@@ -1,15 +1,15 @@
-import React, { Suspense, useEffect, useState, useRef } from 'react';
-import { Canvas, useLoader, useResource, useThree } from 'react-three-fiber';
+import React, { Suspense, useEffect, useRef } from 'react';
+import { Canvas, useLoader, useThree } from 'react-three-fiber';
 import * as THREE from 'three/src/Three';
 import { SceneUtils } from 'three/examples/jsm/utils/SceneUtils';
 
-import MyCamera from '../reusable/CustomCamera';
-import Stats from '../reusable/Stats';
-import OrbitControls from '../reusable/OrbitControls';
+import MyCamera from '../../reusable/CustomCamera';
+import Stats from '../../reusable/Stats';
+import OrbitControls from '../../reusable/OrbitControls';
 
 import { DoubleSide, TextureLoader, RepeatWrapping, BackSide, FogExp2 } from "three";
 
-import floorTex from '../assets/textures/checkerboard.jpg';
+import floorTex from '../../assets/textures/checkerboard.jpg';
 
 function CameraWrapper(props) {
   const { scene } = useThree();
@@ -55,10 +55,10 @@ function Star() {
   const materialFront = new THREE.MeshBasicMaterial({ color: 0xffff00 });
   const materialSide = new THREE.MeshBasicMaterial({ color: 0xff8800 });
 
-  let multiMaterial = [materialFront, materialSide];
+  let multiMaterial = new THREE.MeshFaceMaterial([materialFront, materialSide]);
 
   useEffect(() => {
-    var starShapeGeometry = SceneUtils.createMultiMaterialObject(
+    var starShapeGeometry = new THREE.Mesh(
       new THREE.ExtrudeGeometry(starShape, extrusionSettings),
       multiMaterial
     );

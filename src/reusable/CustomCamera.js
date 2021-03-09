@@ -12,7 +12,7 @@ const MyCamera = ({near=0.1, far=1000, OnCameraInit}) => {
         setDefaultCamera(cam);
 
         OnCameraInit(cam);
-    },[size, setDefaultCamera]);
+    },[size, setDefaultCamera, near, far]);
 
     return (
         <group></group>

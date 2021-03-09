@@ -2,9 +2,9 @@ import React, { Suspense, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three/src/Three';
 import { Canvas, useThree } from 'react-three-fiber';
 
-import MyCamera from '../reusable/CustomCamera';
-import Stats from '../reusable/Stats';
-import OrbitControls from '../reusable/OrbitControls';
+import MyCamera from '../../reusable/CustomCamera';
+import Stats from '../../reusable/Stats';
+import OrbitControls from '../../reusable/OrbitControls';
 
 import { BackSide, FogExp2 } from "three";
 
@@ -24,28 +24,42 @@ function CameraWrapper() {
 }
 
 function Geometry() {
-    let [origin, terminus, direction] = useMemo(()=>{
-        let origin = new THREE.Vector3(50, 100, 50);
-        let terminus = new THREE.Vector3(75, 75, 75);
-        let direction = new THREE.Vector3().subVectors(terminus, origin).normalize();
-        return [origin, terminus, direction];
-    })
+    let lineRef = useRef();
+    let lineRef2 = useRef();
+
+    useEffect(() => {
+        lineRef.current.computeLineDistances();
+        lineRef2.current.computeLineDistances();
+    }, [lineRef, lineRef2]);
+
+    let [lineGeometry, lineMat, dashedLineGeometry, dashedLineMat] = useMemo(() => {
+        //Simple Line
+        let lineGeometry = new THREE.BufferGeometry();
+        const points = [
+            new THREE.Vector3(-150, -100, 0),
+            new THREE.Vector3(-150, 100, 0)
+        ];
+        lineGeometry.setFromPoints(points);
+
+        const lineMat = new THREE.LineBasicMaterial({ color: 0xcc0000 });
+
+        //Dotted Line
+        let dashedLineGeometry = new THREE.BufferGeometry();
+        const dashedLinePoints = [
+            new THREE.Vector3(-100, -100, 0),
+            new THREE.Vector3(-100, 100, 0)
+        ];
+        dashedLineGeometry.setFromPoints(dashedLinePoints);
+
+        const dashedLineMat = new THREE.LineDashedMaterial({ color: 0x00cc00, dashSize: 4, gapSize: 2, linewidth: 4 });
+
+        return [lineGeometry, lineMat, dashedLineGeometry, dashedLineMat];
+    });
+
     return (
         <group>
-            <mesh position={[40, 40, 40]}>
-                <sphereGeometry args={[30, 32, 16]}></sphereGeometry>
-                <meshLambertMaterial color={0x000088}></meshLambertMaterial>
-            </mesh>
-
-            <axesHelper args={[50]} position={[40, 40, 40]}>
-            </axesHelper>
-
-            <gridHelper args={[200, 10, new THREE.Color(0x006600), new THREE.Color(0x006600)]} position={[100, 0, 100]}></gridHelper>
-            <gridHelper args={[200, 10, new THREE.Color(0x000066), new THREE.Color(0x000066)]} position={[100, 100, 0]} rotation={[Math.PI/2, 0, 0]}></gridHelper>
-            <gridHelper args={[200, 10, new THREE.Color(0x660000), new THREE.Color(0x660000)]} position={[0, 100, 100]} rotation={[0, 0, Math.PI/2]}></gridHelper>
-
-            <arrowHelper args={[direction, origin, 50, 0x884400]}></arrowHelper>
-
+            <line ref={lineRef} geometry={lineGeometry} material={lineMat}></line>
+            <line ref={lineRef2} geometry={dashedLineGeometry} material={dashedLineMat}></line>
 
             {/* Sky */}
             <mesh>
@@ -67,7 +81,7 @@ function Lights() {
     );
 }
 
-function HelpersPage(props) {
+function DashedLinesPage(props) {
 
     return (
         <div className="wrapper">
@@ -84,4 +98,4 @@ function HelpersPage(props) {
     );
 }
 
-export default HelpersPage;
+export default DashedLinesPage;

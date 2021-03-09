@@ -3,13 +3,13 @@ import { Canvas, useLoader, useThree } from 'react-three-fiber';
 import * as THREE from 'three/src/Three';
 import { SceneUtils } from 'three/examples/jsm/utils/SceneUtils';
 
-import MyCamera from '../reusable/CustomCamera';
-import Stats from '../reusable/Stats';
-import OrbitControls from '../reusable/OrbitControls';
+import MyCamera from '../../reusable/CustomCamera';
+import Stats from '../../reusable/Stats';
+import OrbitControls from '../../reusable/OrbitControls';
 
 import { DoubleSide, TextureLoader, RepeatWrapping, BackSide, FogExp2 } from "three";
 
-import floorTex from '../assets/textures/checkerboard.jpg';
+import floorTex from '../../assets/textures/checkerboard.jpg';
 
 function CameraWrapper(props) {
   const { scene } = useThree();
@@ -76,35 +76,35 @@ function Geometry() {
 
 
     //ROW 2
-    var boxShape = SceneUtils.createMultiMaterialObject(
+    boxShape = SceneUtils.createMultiMaterialObject(
       new THREE.BoxGeometry(50, 50, 50, 2, 2, 2),
       multiMaterial
     );
     boxShape.position.set(-200, 50, 0);
     shapesParent.current.add(boxShape);
 
-    var icosahedronShape = SceneUtils.createMultiMaterialObject(
+    icosahedronShape = SceneUtils.createMultiMaterialObject(
       new THREE.IcosahedronGeometry(40, 1),
       multiMaterial
     );
     icosahedronShape.position.set(-100, 50, 0);
     shapesParent.current.add(icosahedronShape);
 
-    var octahedronShape = SceneUtils.createMultiMaterialObject(
+    octahedronShape = SceneUtils.createMultiMaterialObject(
       new THREE.OctahedronGeometry(40, 1),
       multiMaterial
     );
     octahedronShape.position.set(0, 50, 0);
     shapesParent.current.add(octahedronShape);
 
-    var tetrahedronShape = SceneUtils.createMultiMaterialObject(
+    tetrahedronShape = SceneUtils.createMultiMaterialObject(
       new THREE.TetrahedronGeometry(40, 1),
       multiMaterial
     );
     tetrahedronShape.position.set(100, 50, 0);
     shapesParent.current.add(tetrahedronShape);
 
-    var sphereShape = SceneUtils.createMultiMaterialObject(
+    sphereShape = SceneUtils.createMultiMaterialObject(
       new THREE.SphereGeometry(40, 32, 16, 0, 2*Math.PI, 0, Math.PI / 2),
       multiMaterial
     );
@@ -170,14 +170,14 @@ function Geometry() {
     truncatedPyramidShape.position.set(0, 50, -200);
     shapesParent.current.add(truncatedPyramidShape);
 
-    var torusShape = SceneUtils.createMultiMaterialObject(
+    torusShape = SceneUtils.createMultiMaterialObject(
       new THREE.TorusGeometry(30, 20, 16, 40),
       multiMaterial
     );
     torusShape.position.set(100, 50, -200);
     shapesParent.current.add(torusShape);
 
-    var torusKnotShape = SceneUtils.createMultiMaterialObject(
+    torusKnotShape = SceneUtils.createMultiMaterialObject(
       new THREE.TorusKnotGeometry(30, 6, 160, 10, 3, 7),
       multiMaterial
     );

@@ -9,7 +9,7 @@ function Stats(){
     useEffect(()=>{
         stats.showPanel(0);
         document.body.appendChild(stats.dom);
-    }, []);
+    }, [stats]);
 
     return useFrame((state)=>{
         stats.begin();

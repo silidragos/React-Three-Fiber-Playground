@@ -3,15 +3,15 @@ import * as THREE from 'three/src/Three';
 import { Canvas, useLoader, useThree } from 'react-three-fiber';
 import DatGui, { DatButton, DatFolder, DatColor, DatNumber, DatSelect } from '@tim-soft/react-dat-gui';
 
-import MyCamera from '../reusable/CustomCamera';
-import Stats from '../reusable/Stats';
-import OrbitControls from '../reusable/OrbitControls';
-import { DatGuiContext } from '../reusable/DatGuiContext';
+import MyCamera from '../../reusable/CustomCamera';
+import Stats from '../../reusable/Stats';
+import OrbitControls from '../../reusable/OrbitControls';
+import { DatGuiContext } from '../../reusable/DatGuiContext';
 
-import floorTex from '../assets/textures/checkerboard.jpg';
+import floorTex from '../../assets/textures/checkerboard.jpg';
 
-import FullScreen from '../libs/THREEx.FullScreen';
-import WindowResize from '../libs/THREEx.windowresize';
+import FullScreen from '../../libs/THREEx.FullScreen';
+import WindowResize from '../../libs/THREEx.windowresize';
 
 function CameraWrapper(props) {
     const { scene } = useThree();

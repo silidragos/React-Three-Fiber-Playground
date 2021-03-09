@@ -2,9 +2,9 @@ import React, { Suspense, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three/src/Three';
 import { Canvas, useThree } from 'react-three-fiber';
 
-import MyCamera from '../reusable/CustomCamera';
-import Stats from '../reusable/Stats';
-import OrbitControls from '../reusable/OrbitControls';
+import MyCamera from '../../reusable/CustomCamera';
+import Stats from '../../reusable/Stats';
+import OrbitControls from '../../reusable/OrbitControls';
 
 import { BackSide, FogExp2 } from "three";
 
@@ -24,28 +24,27 @@ function CameraWrapper() {
 }
 
 function Geometry() {
-
+    let [origin, terminus, direction] = useMemo(()=>{
+        let origin = new THREE.Vector3(50, 100, 50);
+        let terminus = new THREE.Vector3(75, 75, 75);
+        let direction = new THREE.Vector3().subVectors(terminus, origin).normalize();
+        return [origin, terminus, direction];
+    })
     return (
         <group>
-            <mesh position={[-60, 55, 0]}>
-                <sphereGeometry args={[50, 32, 16]}></sphereGeometry>
-                <meshNormalMaterial></meshNormalMaterial>
+            <mesh position={[40, 40, 40]}>
+                <sphereGeometry args={[30, 32, 16]}></sphereGeometry>
+                <meshLambertMaterial color={0x000088}></meshLambertMaterial>
             </mesh>
 
-            <mesh position={[-60, 55, 0]} scale={[1.05, 1.05, 1.05]}>
-                <sphereGeometry args={[50, 32, 16]}></sphereGeometry>
-                <meshBasicMaterial color={0xff0000} side={THREE.BackSide}></meshBasicMaterial>
-            </mesh>
+            <axesHelper args={[50]} position={[40, 40, 40]}>
+            </axesHelper>
 
-            <mesh position={[60, 60, 0]}>
-                <boxGeometry args={[80, 80, 80]}></boxGeometry>
-                <meshNormalMaterial></meshNormalMaterial>
-            </mesh>
+            <gridHelper args={[200, 10, new THREE.Color(0x006600), new THREE.Color(0x006600)]} position={[100, 0, 100]}></gridHelper>
+            <gridHelper args={[200, 10, new THREE.Color(0x000066), new THREE.Color(0x000066)]} position={[100, 100, 0]} rotation={[Math.PI/2, 0, 0]}></gridHelper>
+            <gridHelper args={[200, 10, new THREE.Color(0x660000), new THREE.Color(0x660000)]} position={[0, 100, 100]} rotation={[0, 0, Math.PI/2]}></gridHelper>
 
-            <mesh position={[60, 60, 0]} scale={[1.05, 1.05, 1.05]}>
-                <boxGeometry args={[80, 80, 80]}></boxGeometry>
-                <meshBasicMaterial color={0x00ff00} side={THREE.BackSide}></meshBasicMaterial>
-            </mesh>
+            <arrowHelper args={[direction, origin, 50, 0x884400]}></arrowHelper>
 
 
             {/* Sky */}
@@ -68,7 +67,7 @@ function Lights() {
     );
 }
 
-function OutlinePage(props) {
+function HelpersPage(props) {
 
     return (
         <div className="wrapper">
@@ -85,4 +84,4 @@ function OutlinePage(props) {
     );
 }
 
-export default OutlinePage;
+export default HelpersPage;

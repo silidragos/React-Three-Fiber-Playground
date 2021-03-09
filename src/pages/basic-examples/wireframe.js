@@ -3,13 +3,13 @@ import * as THREE from 'three/src/Three';
 import {SceneUtils} from 'three/examples/jsm/utils/SceneUtils';
 import { Canvas, useLoader, useThree } from 'react-three-fiber';
 
-import MyCamera from '../reusable/CustomCamera';
-import Stats from '../reusable/Stats';
-import OrbitControls from '../reusable/OrbitControls';
+import MyCamera from '../../reusable/CustomCamera';
+import Stats from '../../reusable/Stats';
+import OrbitControls from '../../reusable/OrbitControls';
 
-import { DoubleSide, TextureLoader, RepeatWrapping, BackSide, FogExp2, Scene } from "three";
+import { DoubleSide, TextureLoader, RepeatWrapping, BackSide, FogExp2 } from "three";
 
-import floorTex from '../assets/textures/checkerboard.jpg';
+import floorTex from '../../assets/textures/checkerboard.jpg';
 
 function CameraWrapper(props) {
   const { scene } = useThree();
@@ -39,7 +39,7 @@ function Geometry() {
     const wireframeMat = new THREE.MeshBasicMaterial({ color: 0x00ee00, wireframe: true, transparent: true });
     const darkMat = new THREE.MeshBasicMaterial({color:0x000088});
     return [wireframeMat, darkMat];
-  });
+  }, []);
 
   useEffect(()=>{
     const multiMatSphere = SceneUtils.createMultiMaterialObject(

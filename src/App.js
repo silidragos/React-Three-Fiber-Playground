@@ -5,18 +5,22 @@ import {
   Route
 } from "react-router-dom";
 
-import HelloWorldPage from './pages/hello-world';
-import SolidMaterialsPage from './pages/solid-materials';
-import ColorExplorerPage from './pages/color-explorer';
-import WireframePage from './pages/wireframe';
-import HelpersPage from './pages/helpers';
-import OutlinePage from './pages/outline';
-import VertexColorsPage from './pages/vertex-colors';
-import ShapesPage from './pages/shapes';
+import HelloWorldPage from './pages/basic-examples/hello-world';
+import SolidMaterialsPage from './pages/basic-examples/solid-materials';
+import ColorExplorerPage from './pages/basic-examples/color-explorer';
+import WireframePage from './pages/basic-examples/wireframe';
+import HelpersPage from './pages/basic-examples/helpers';
+import OutlinePage from './pages/basic-examples/outline';
+import VertexColorsPage from './pages/basic-examples/vertex-colors';
+import ShapesPage from './pages/basic-examples/shapes';
+import DashedLinesPage from "./pages/basic-examples/dashed-lines";
+import ExtrusionPage from "./pages/basic-examples/extrusion";
+
+
 
 import './App.css';
-import DashedLinesPage from "./pages/dashed-lines";
-import ExtrusionPage from "./pages/extrusion";
+import Text3DPage from "./pages/basic-examples/text-3d";
+import TexturesPage from "./pages/textures/textures";
 
 export default function App() {
   return (
@@ -52,6 +56,14 @@ export default function App() {
           </Route>
           <Route path="/extrusion">
             <ExtrusionPage/>
+          </Route>
+          <Route path="/text-3d">
+            <Text3DPage/>
+          </Route>
+
+          
+          <Route path="/textures">
+            <TexturesPage/>
           </Route>
         </Switch>
       </div>

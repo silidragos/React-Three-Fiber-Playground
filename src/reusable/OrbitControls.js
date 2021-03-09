@@ -9,6 +9,7 @@ function Controls(){
     const controls = useRef();
 
     useFrame(()=>{
+        if(controls.current === null) return;
         controls.current.update();
     });
     return(
