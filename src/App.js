@@ -18,11 +18,13 @@ import ExtrusionPage from "./pages/basic-examples/extrusion";
 
 
 
-import './App.css';
 import Text3DPage from "./pages/basic-examples/text-3d";
 import TexturesPage from "./pages/textures/textures";
 import TexturesRepeatPage from "./pages/textures/textures-repeat";
 import TextureText3DPage from "./pages/textures/texture-text-3d";
+import TranslucencePage from "./pages/textures/translucence";
+import ShadowPage from "./pages/textures/shadow";
+import './App.css';
 
 export default function App() {
   return (
@@ -72,6 +74,12 @@ export default function App() {
           </Route>
           <Route path="/texture-text-3d">
             <TextureText3DPage/>
+          </Route>
+          <Route path="/translucence">
+             <TranslucencePage/>
+          </Route>
+          <Route path="/shadow">
+             <ShadowPage/>
           </Route>
         </Switch>
       </div>

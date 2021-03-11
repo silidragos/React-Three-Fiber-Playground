@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useMemo, useRef } from 'react';
-import * as THREE from 'three/src/Three';
+import * as THREE from 'three';
 import {SceneUtils} from 'three/examples/jsm/utils/SceneUtils';
 import { Canvas, useLoader, useThree } from 'react-three-fiber';
 

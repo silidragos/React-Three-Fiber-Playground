@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useLoader, useThree } from 'react-three-fiber';
-import * as THREE from 'three/src/Three';
+import * as THREE from 'three';
 import { SceneUtils } from 'three/examples/jsm/utils/SceneUtils';
 
 import MyCamera from '../../reusable/CustomCamera';

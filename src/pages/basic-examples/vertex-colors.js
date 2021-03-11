@@ -1,5 +1,5 @@
 import React, { Suspense, useMemo, useState } from 'react';
-import * as THREE from 'three/src/Three';
+import * as THREE from 'three';
 import { Canvas, useThree, useLoader } from 'react-three-fiber';
 
 import MathUtils from '../../reusable/MathUtils';

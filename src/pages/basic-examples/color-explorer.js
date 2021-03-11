@@ -1,5 +1,5 @@
 import React, { Suspense, useContext, useEffect, useMemo, useState } from 'react';
-import * as THREE from 'three/src/Three';
+import * as THREE from 'three';
 import { Canvas, useLoader, useThree } from 'react-three-fiber';
 import DatGui, { DatButton, DatFolder, DatColor, DatNumber, DatSelect } from '@tim-soft/react-dat-gui';
 

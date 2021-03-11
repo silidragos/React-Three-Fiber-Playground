@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useRef, useMemo } from 'react';
 import { Canvas, useLoader, useThree } from 'react-three-fiber';
-import * as THREE from 'three/src/Three';
+import * as THREE from 'three';
 import MyCamera from '../../reusable/CustomCamera';
 import Stats from '../../reusable/Stats';
 import OrbitControls from '../../reusable/OrbitControls';
