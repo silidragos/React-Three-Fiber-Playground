@@ -25,6 +25,8 @@ import TextureText3DPage from "./pages/textures/texture-text-3d";
 import TranslucencePage from "./pages/textures/translucence";
 import ShadowPage from "./pages/textures/shadow";
 import './App.css';
+import SkyboxPage from "./pages/textures/skybox";
+import ReflectionPage from "./pages/textures/reflection";
 
 export default function App() {
   return (
@@ -80,6 +82,12 @@ export default function App() {
           </Route>
           <Route path="/shadow">
              <ShadowPage/>
+          </Route>
+          <Route path="/skybox">
+             <SkyboxPage/>
+          </Route>
+          <Route path="/reflection">
+             <ReflectionPage/>
           </Route>
         </Switch>
       </div>
