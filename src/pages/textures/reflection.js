@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect, useMemo } from 'react';
-import { Canvas, useLoader, useThree } from 'react-three-fiber';
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Canvas, useFrame, useLoader, useThree } from 'react-three-fiber';
 import * as THREE from 'three';
 
 import MyCamera from '../../reusable/CustomCamera';
@@ -34,8 +34,10 @@ function CameraWrapper(props) {
 
 function Geometry() {
     const floorTexture = useLoader(TextureLoader, floorTex);
-    floorTexture.wrapS = floorTexture.wrapT = RepeatWrapping;
-    floorTexture.repeat.set(10, 10);
+    useEffect(() => {
+        floorTexture.wrapS = floorTexture.wrapT = RepeatWrapping;
+        floorTexture.repeat.set(10, 10);
+    }, [floorTexture]);
 
     let textures = [];
     textures.push(useLoader(TextureLoader, skyboxXPos));
@@ -45,8 +47,8 @@ function Geometry() {
     textures.push(useLoader(TextureLoader, skyboxZPos));
     textures.push(useLoader(TextureLoader, skyboxZNeg));
 
-    //When used MeshFaceMaterial as jsx it acted as a simple material
-    //Puting the same image on all faces :-?
+    // When used MeshFaceMaterial as jsx it acted as a simple material
+    // Puting the same image on all faces :-?
     let mat = useMemo(() => {
         let materialArray = [];
         for (let i = 0; i < textures.length; i++) {
@@ -55,11 +57,43 @@ function Geometry() {
                 side: THREE.BackSide
             }));
         }
-        return new THREE.MeshFaceMaterial(materialArray);
+        return materialArray;
     }, [textures]);
+
+    let cubeEnvMap = useRef();
+    let mirrorCube = useRef();
+    let sphereEnvMap = useRef();
+    let mirrorSphere = useRef();
+
+    //If encoding different from renderer encoding, it will convert each frame and become laggy for more then one cubemap
+    //https://threejs.org/examples/webgl_materials_cubemap_dynamic.html
+    const [renderTarget] = useState(new THREE.WebGLCubeRenderTarget(512, { format: THREE.RGBFormat, generateMipmaps: true, encoding: THREE.sRGBEncoding }));
+    const [sphereRenderTarget] = useState(new THREE.WebGLCubeRenderTarget(512, { format: THREE.RGBFormat, generateMipmaps: true, encoding: THREE.sRGBEncoding}));
+    useFrame(({ gl, scene }) => {
+        mirrorCube.current.visible = false;
+        mirrorSphere.current.visible = false;
+        cubeEnvMap.current.update(gl, scene);
+        sphereEnvMap.current.update(gl, scene);
+        mirrorCube.current.visible = true;
+        mirrorSphere.current.visible = true;
+    });
+
+
     return (
         <group>
+            <mesh ref={mirrorCube} position={[-75, 50, 0]}>
+                <boxGeometry target="geometry" args={[100, 100, 10, 1, 1, 1]}></boxGeometry>
+                <meshBasicMaterial target="material" envMap={renderTarget.texture} ></meshBasicMaterial>
+            </mesh>
 
+            <cubeCamera ref={cubeEnvMap} position={[-75, 50, 0]} args={[0.1, 5000, renderTarget]}></cubeCamera>
+
+            <mesh ref={mirrorSphere} position={[75, 50, 0]}>
+                <sphereGeometry target="geometry" args={[50, 32, 16]}></sphereGeometry>
+                <meshBasicMaterial target="material" envMap={renderTarget.texture} ></meshBasicMaterial>
+            </mesh>
+            <cubeCamera ref={sphereEnvMap} position={[75, 50, 0]} args={[0.1, 5000, sphereRenderTarget]}></cubeCamera>
+            {/* Skybox */}
             <mesh material={mat}>
                 <boxGeometry attach="geometry" args={[5000, 5000, 5000]}></boxGeometry>
             </mesh>
@@ -92,7 +126,6 @@ function Lights() {
 
 
 function ReflectionPage(props) {
-
     return (
         <div className="wrapper">
             <Canvas>

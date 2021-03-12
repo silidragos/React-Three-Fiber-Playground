@@ -55,7 +55,7 @@ function Geometry() {
                 side: THREE.BackSide
             }));
         }
-        return new THREE.MeshFaceMaterial(materialArray);
+        return materialArray;
     }, [textures]);
     return (
         <group>
