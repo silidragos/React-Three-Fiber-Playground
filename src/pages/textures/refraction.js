@@ -49,7 +49,6 @@ function ReflectiveSphere(props) {
         mirrorSphere.current.visible = true;
     });
 
-    console.log(props.data.reflectivity);
     return (
         <group>
             <mesh ref={mirrorSphere} position={[0, 50, 0]}>
