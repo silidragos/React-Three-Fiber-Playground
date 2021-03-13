@@ -27,6 +27,7 @@ import ShadowPage from "./pages/textures/shadow";
 import './App.css';
 import SkyboxPage from "./pages/textures/skybox";
 import ReflectionPage from "./pages/textures/reflection";
+import RefractionPage from "./pages/textures/refraction";
 
 export default function App() {
   return (
@@ -88,6 +89,9 @@ export default function App() {
           </Route>
           <Route path="/reflection">
              <ReflectionPage/>
+          </Route>
+          <Route path="/refraction">
+            <RefractionPage/>
           </Route>
         </Switch>
       </div>
