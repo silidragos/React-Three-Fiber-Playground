@@ -29,6 +29,7 @@ import SkyboxPage from "./pages/textures/skybox";
 import ReflectionPage from "./pages/textures/reflection";
 import RefractionPage from "./pages/textures/refraction";
 import BubblePage from "./pages/textures/bubble";
+import TextureFromCanvasPage from "./pages/textures/texture-from-canvas";
 
 export default function App() {
   return (
@@ -96,6 +97,9 @@ export default function App() {
           </Route>
           <Route path="/bubble">
             <BubblePage/>
+          </Route>
+          <Route path="/texture-from-canvas">
+            <TextureFromCanvasPage/>
           </Route>
         </Switch>
       </div>
