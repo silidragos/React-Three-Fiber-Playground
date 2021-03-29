@@ -30,6 +30,7 @@ import ReflectionPage from "./pages/textures/reflection";
 import RefractionPage from "./pages/textures/refraction";
 import BubblePage from "./pages/textures/bubble";
 import TextureFromCanvasPage from "./pages/textures/texture-from-canvas";
+import TextureAnimationPage from "./pages/textures/texture-animation";
 
 export default function App() {
   return (
@@ -100,6 +101,9 @@ export default function App() {
           </Route>
           <Route path="/texture-from-canvas">
             <TextureFromCanvasPage/>
+          </Route>
+          <Route path="/texture-animation">
+            <TextureAnimationPage/>
           </Route>
         </Switch>
       </div>
