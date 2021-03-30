@@ -32,6 +32,9 @@ import BubblePage from "./pages/textures/bubble";
 import TextureFromCanvasPage from "./pages/textures/texture-from-canvas";
 import TextureAnimationPage from "./pages/textures/texture-animation";
 
+import SpritesPage from './pages/sprites-examples/sprites';
+import SpriteTextLabels from "./pages/sprites-examples/sprite-text-labels";
+
 export default function App() {
   return (
     <Router>
@@ -104,6 +107,14 @@ export default function App() {
           </Route>
           <Route path="/texture-animation">
             <TextureAnimationPage/>
+          </Route>
+
+
+          <Route path="/sprites">
+            <SpritesPage></SpritesPage>
+          </Route>
+          <Route path="/sprite-text-labels">
+            <SpriteTextLabels></SpriteTextLabels>
           </Route>
         </Switch>
       </div>
