@@ -43,13 +43,13 @@ function Geometry() {
       {/* Floor */}
       <mesh position={[0, -0.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry attach="geometry" args={[1000, 1000, 1, 1]}></planeGeometry>
-        <meshBasicMaterial attach="material" map={floorTexture} args={{ side: DoubleSide }}></meshBasicMaterial>
+                <meshBasicMaterial attach="material" map={floorTexture} side={DoubleSide}></meshBasicMaterial>
       </mesh>
 
       {/* Sky */}
       <mesh>
         <boxGeometry attach="geometry" args={[10000, 10000, 10000]}></boxGeometry>
-        <meshBasicMaterial args={{color:0x9990ff, side: BackSide}}></meshBasicMaterial>
+                <meshBasicMaterial color={0x9990ff} side={BackSide}></meshBasicMaterial>
       </mesh>
 
       <axesHelper args={[100]}></axesHelper>

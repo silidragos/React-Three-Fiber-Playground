@@ -34,6 +34,9 @@ import TextureAnimationPage from "./pages/textures/texture-animation";
 
 import SpritesPage from './pages/sprites-examples/sprites';
 import SpriteTextLabels from "./pages/sprites-examples/sprite-text-labels";
+import LabeledGeometryPage from "./pages/sprites-examples/labeled-geometry";
+import MouseSpritePage from "./pages/mouse-and-keyboard-examples/mouse-sprite";
+import MouseClickPage from "./pages/mouse-and-keyboard-examples/mouse-click";
 
 export default function App() {
   return (
@@ -47,66 +50,66 @@ export default function App() {
             <SolidMaterialsPage />
           </Route>
           <Route path="/color-explorer">
-            <ColorExplorerPage/>
+            <ColorExplorerPage />
           </Route>
           <Route path="/wireframe">
-            <WireframePage/>
+            <WireframePage />
           </Route>
           <Route path='/dashed-lines'>
-            <DashedLinesPage/>
+            <DashedLinesPage />
           </Route>
           <Route path='/helpers'>
-            <HelpersPage/>
+            <HelpersPage />
           </Route>
           <Route path='/outline'>
-            <OutlinePage/>
+            <OutlinePage />
           </Route>
           <Route path="/vertex-colors">
-            <VertexColorsPage/>
+            <VertexColorsPage />
           </Route>
           <Route path="/shapes">
-            <ShapesPage/>
+            <ShapesPage />
           </Route>
           <Route path="/extrusion">
-            <ExtrusionPage/>
+            <ExtrusionPage />
           </Route>
           <Route path="/text-3d">
-            <Text3DPage/>
+            <Text3DPage />
           </Route>
 
-          
+
           <Route path="/textures">
-            <TexturesPage/>
+            <TexturesPage />
           </Route>
           <Route path="/textures-repeat">
-            <TexturesRepeatPage/>
+            <TexturesRepeatPage />
           </Route>
           <Route path="/texture-text-3d">
-            <TextureText3DPage/>
+            <TextureText3DPage />
           </Route>
           <Route path="/translucence">
-             <TranslucencePage/>
+            <TranslucencePage />
           </Route>
           <Route path="/shadow">
-             <ShadowPage/>
+            <ShadowPage />
           </Route>
           <Route path="/skybox">
-             <SkyboxPage/>
+            <SkyboxPage />
           </Route>
           <Route path="/reflection">
-             <ReflectionPage/>
+            <ReflectionPage />
           </Route>
           <Route path="/refraction">
-            <RefractionPage/>
+            <RefractionPage />
           </Route>
           <Route path="/bubble">
-            <BubblePage/>
+            <BubblePage />
           </Route>
           <Route path="/texture-from-canvas">
-            <TextureFromCanvasPage/>
+            <TextureFromCanvasPage />
           </Route>
           <Route path="/texture-animation">
-            <TextureAnimationPage/>
+            <TextureAnimationPage />
           </Route>
 
 
@@ -115,6 +118,16 @@ export default function App() {
           </Route>
           <Route path="/sprite-text-labels">
             <SpriteTextLabels></SpriteTextLabels>
+          </Route>
+          <Route path="/labeled-geometry">
+            <LabeledGeometryPage></LabeledGeometryPage>
+          </Route>
+
+          <Route path="/mouse-sprite">
+            <MouseSpritePage></MouseSpritePage>
+            </Route>
+          <Route path="/mouse-click">
+            <MouseClickPage></MouseClickPage>
           </Route>
         </Switch>
       </div>
