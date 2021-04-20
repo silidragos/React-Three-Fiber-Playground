@@ -38,6 +38,7 @@ import LabeledGeometryPage from "./pages/sprites-examples/labeled-geometry";
 import MouseSpritePage from "./pages/mouse-and-keyboard-examples/mouse-sprite";
 import MouseClickPage from "./pages/mouse-and-keyboard-examples/mouse-click";
 import MouseHoverPage from "./pages/mouse-and-keyboard-examples/mouse-hover";
+import MouseTooltipPage from "./pages/mouse-and-keyboard-examples/mouse-tooltip";
 
 export default function App() {
   return (
@@ -132,6 +133,9 @@ export default function App() {
           </Route>
           <Route path="/mouse-hover">
             <MouseHoverPage></MouseHoverPage>
+          </Route>
+          <Route path="/mouse-tooltip">
+            <MouseTooltipPage></MouseTooltipPage>
           </Route>
         </Switch>
       </div>
