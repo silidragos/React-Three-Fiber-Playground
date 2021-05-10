@@ -51,7 +51,7 @@ function ToolTip(props) {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
         }, false);
-    });
+    }, []);
 
     useFrame(({ gl, scene }) => {
         if (mouse !== undefined && props.raycastableParent !== null) {

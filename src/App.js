@@ -16,8 +16,6 @@ import ShapesPage from './pages/basic-examples/shapes';
 import DashedLinesPage from "./pages/basic-examples/dashed-lines";
 import ExtrusionPage from "./pages/basic-examples/extrusion";
 
-
-
 import Text3DPage from "./pages/basic-examples/text-3d";
 import TexturesPage from "./pages/textures/textures";
 import TexturesRepeatPage from "./pages/textures/textures-repeat";
@@ -39,6 +37,7 @@ import MouseSpritePage from "./pages/mouse-and-keyboard-examples/mouse-sprite";
 import MouseClickPage from "./pages/mouse-and-keyboard-examples/mouse-click";
 import MouseHoverPage from "./pages/mouse-and-keyboard-examples/mouse-hover";
 import MouseTooltipPage from "./pages/mouse-and-keyboard-examples/mouse-tooltip";
+import KeyboardEventsPage from "./pages/mouse-and-keyboard-examples/keyboard-events";
 
 export default function App() {
   return (
@@ -136,6 +135,9 @@ export default function App() {
           </Route>
           <Route path="/mouse-tooltip">
             <MouseTooltipPage></MouseTooltipPage>
+          </Route>
+          <Route path="/keyboard-events">
+            <KeyboardEventsPage></KeyboardEventsPage>
           </Route>
         </Switch>
       </div>
