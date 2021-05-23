@@ -39,6 +39,7 @@ import MouseHoverPage from "./pages/mouse-and-keyboard-examples/mouse-hover";
 import MouseTooltipPage from "./pages/mouse-and-keyboard-examples/mouse-tooltip";
 import KeyboardEventsPage from "./pages/mouse-and-keyboard-examples/keyboard-events";
 import MeshMovementPage from "./pages/camera-renderer-examples/mesh-movement";
+import ChaseCameraPage from "./pages/camera-renderer-examples/chase-camera";
 
 export default function App() {
   return (
@@ -143,6 +144,9 @@ export default function App() {
 
           <Route path="/mesh-movement">
             <MeshMovementPage></MeshMovementPage>
+          </Route>
+          <Route path="/chase-camera">
+            <ChaseCameraPage></ChaseCameraPage>
           </Route>
         </Switch>
       </div>

@@ -34,6 +34,8 @@ function CameraWrapper(props) {
 }
 
 function Geometry() {
+    const { camera } = useThree();
+
     const query = useKeyState.default.useKeyState().keyStateQuery;
     const { z } = useKeyState.default.useKeyState({ z: 'z' });
 
@@ -58,7 +60,7 @@ function Geometry() {
             new THREE.MeshLambertMaterial({ map: face6Texture })
         ];
 
-        return new multiMaterial;
+        return multiMaterial;
 
     }, [face1Texture, face2Texture, face3Texture, face4Texture, face5Texture, face6Texture]);
 
@@ -121,6 +123,12 @@ function Geometry() {
             mesh.current.position.set(0, 25.1, 0);
             mesh.current.rotation.set(0, 0, 0);
         }
+
+        let relativeCameraOffset = new THREE.Vector3(0, 50, 200);
+        let cameraOffset = relativeCameraOffset.applyMatrix4(mesh.current.matrixWorld);
+
+        camera.position.set(cameraOffset.x, cameraOffset.y, cameraOffset.z);
+        camera.lookAt(mesh.current.position);
     });
 
     return (
@@ -156,13 +164,13 @@ function Lights() {
 }
 
 
-function MeshMovementPage(props) {
+function ChaseCameraPage(props) {
 
     return (
         <div className="wrapper">
             <Canvas>
                 <CameraWrapper />
-                <OrbitControls />
+                {/* <OrbitControls /> */}
                 <Lights></Lights>
                 <Suspense fallback={null}>
                     <Geometry></Geometry>
@@ -173,4 +181,4 @@ function MeshMovementPage(props) {
     );
 }
 
-export default MeshMovementPage;
+export default ChaseCameraPage;
